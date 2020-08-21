@@ -78,25 +78,25 @@ const renderBoard = (boardContainer, boardTasks) => {
   //   .slice(0, Math.min(tasks.length, TASK_COUNT_PER_STEP))
   //   .forEach((boardTask) => renderTask(taskListComponent.getElement(), boardTask));
 
-  if (boardTasks.length > TASK_COUNT_PER_STEP) {
-    let renderedTaskCount = TASK_COUNT_PER_STEP;
-
-    const loadMoreButtonComponent = new LoadMoreButtonView();
-
-    render(boardComponent, loadMoreButtonComponent, RenderPosition.BEFOREEND);
-
-    loadMoreButtonComponent.setClickHandler(() => {
-      boardTasks
-        .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-        .forEach((boardTask) => renderTask(taskListComponent.getElement(), boardTask));
-
-      renderedTaskCount += TASK_COUNT_PER_STEP;
-
-      if (renderedTaskCount >= boardTasks.length) {
-        remove(loadMoreButtonComponent);
-      }
-    });
-  }
+  // if (boardTasks.length > TASK_COUNT_PER_STEP) {
+  //   let renderedTaskCount = TASK_COUNT_PER_STEP;
+  //
+  //   const loadMoreButtonComponent = new LoadMoreButtonView();
+  //
+  //   render(boardComponent, loadMoreButtonComponent, RenderPosition.BEFOREEND);
+  //
+  //   loadMoreButtonComponent.setClickHandler(() => {
+  //     boardTasks
+  //       .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
+  //       .forEach((boardTask) => renderTask(taskListComponent.getElement(), boardTask));
+  //
+  //     renderedTaskCount += TASK_COUNT_PER_STEP;
+  //
+  //     if (renderedTaskCount >= boardTasks.length) {
+  //       remove(loadMoreButtonComponent);
+  //     }
+  //   });
+  // }
 };
 
 render(siteHeaderElement, new SiteMenuView(), RenderPosition.BEFOREEND);

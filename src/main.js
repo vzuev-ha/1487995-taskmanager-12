@@ -21,36 +21,36 @@ const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 const renderTask = (taskListElement, task) => {
-  const taskComponent = new TaskView(task);
-  const taskEditComponent = new TaskEditView(task);
+  // const taskComponent = new TaskView(task);
+  // const taskEditComponent = new TaskEditView(task);
 
-  const replaceCardToForm = () => {
-    replace(taskEditComponent, taskComponent);
-  };
+  // const replaceCardToForm = () => {
+  //   replace(taskEditComponent, taskComponent);
+  // };
 
-  const replaceFormToCard = () => {
-    replace(taskComponent, taskEditComponent);
-  };
+  // const replaceFormToCard = () => {
+  //   replace(taskComponent, taskEditComponent);
+  // };
 
-  const onEscKeyDown = (evt) => {
-    if (evt.key === `Escape` || evt.key === `Esc`) {
-      evt.preventDefault();
-      replaceFormToCard();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
+  // const onEscKeyDown = (evt) => {
+  //   if (evt.key === `Escape` || evt.key === `Esc`) {
+  //     evt.preventDefault();
+  //     replaceFormToCard();
+  //     document.removeEventListener(`keydown`, onEscKeyDown);
+  //   }
+  // };
 
-  taskComponent.setEditClickHandler(() => {
-    replaceCardToForm();
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
+  // taskComponent.setEditClickHandler(() => {
+  //   replaceCardToForm();
+  //   document.addEventListener(`keydown`, onEscKeyDown);
+  // });
 
-  taskEditComponent.setFormSubmitHandler(() => {
-    replaceFormToCard();
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  });
+  // taskEditComponent.setFormSubmitHandler(() => {
+  //   replaceFormToCard();
+  //   document.removeEventListener(`keydown`, onEscKeyDown);
+  // });
 
-  render(taskListElement, taskComponent, RenderPosition.BEFOREEND);
+  // render(taskListElement, taskComponent, RenderPosition.BEFOREEND);
 };
 
 const renderBoard = (boardContainer, boardTasks) => {

@@ -54,11 +54,11 @@ const renderTask = (taskListElement, task) => {
 };
 
 const renderBoard = (boardContainer, boardTasks) => {
-  const boardComponent = new BoardView();
-  const taskListComponent = new TaskListView();
+  // const boardComponent = new BoardView();
+  // const taskListComponent = new TaskListView();
 
-  render(boardContainer, boardComponent, RenderPosition.BEFOREEND);
-  render(boardComponent, taskListComponent, RenderPosition.BEFOREEND);
+  // render(boardContainer, boardComponent, RenderPosition.BEFOREEND);
+  // render(boardComponent, taskListComponent, RenderPosition.BEFOREEND);
 
   // По условию заглушка должна показываться,
   // когда нет задач или все задачи в архиве.
@@ -67,16 +67,16 @@ const renderBoard = (boardContainer, boardTasks) => {
   // Но благодаря тому, что на пустом массиве every вернёт true,
   // мы можем опустить "tasks.length === 0".
   // p.s. А метод some на пустом массиве наборот вернет false
-  if (boardTasks.every((task) => task.isArchive)) {
-    render(boardComponent, new NoTaskView(), RenderPosition.AFTERBEGIN);
-    return;
-  }
+  // if (boardTasks.every((task) => task.isArchive)) {
+  //   render(boardComponent, new NoTaskView(), RenderPosition.AFTERBEGIN);
+  //   return;
+  // }
 
-  render(boardComponent, new SortView(), RenderPosition.AFTERBEGIN);
+  // render(boardComponent, new SortView(), RenderPosition.AFTERBEGIN);
 
-  boardTasks
-    .slice(0, Math.min(tasks.length, TASK_COUNT_PER_STEP))
-    .forEach((boardTask) => renderTask(taskListComponent.getElement(), boardTask));
+  // boardTasks
+  //   .slice(0, Math.min(tasks.length, TASK_COUNT_PER_STEP))
+  //   .forEach((boardTask) => renderTask(taskListComponent.getElement(), boardTask));
 
   if (boardTasks.length > TASK_COUNT_PER_STEP) {
     let renderedTaskCount = TASK_COUNT_PER_STEP;

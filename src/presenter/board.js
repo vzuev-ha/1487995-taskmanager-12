@@ -2,10 +2,10 @@ import BoardView from "../view/board.js";
 import SortView from "../view/sort.js";
 import TaskListView from "../view/task-list.js";
 import NoTaskView from "../view/no-task.js";
-import TaskView from "../view/task.js";
-import TaskEditView from "../view/task-edit.js";
 import LoadMoreButtonView from "../view/load-more-button.js";
-import {render, RenderPosition, replace, remove} from "../utils/render.js";
+import TaskPresenter from "./task.js";
+import {updateItem} from "../utils/common.js";
+import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortTaskUp, sortTaskDown} from "../utils/task.js";
 import {SortType} from "../const.js";
 
@@ -16,6 +16,7 @@ export default class Board {
     this._boardContainer = boardContainer;
     this._renderedTaskCount = TASK_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
+    this._taskPresenter = {};
 
     this._boardComponent = new BoardView();
     this._sortComponent = new SortView();
@@ -23,6 +24,8 @@ export default class Board {
     this._noTaskComponent = new NoTaskView();
     this._loadMoreButtonComponent = new LoadMoreButtonView();
 
+    this._handleTaskChange = this._handleTaskChange.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
     this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
@@ -38,6 +41,18 @@ export default class Board {
     render(this._boardComponent, this._taskListComponent, RenderPosition.BEFOREEND);
 
     this._renderBoard();
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._taskPresenter)
+      .forEach((presenter) => presenter.resetView());
+  }
+
+  _handleTaskChange(updatedTask) {
+    this._boardTasks = updateItem(this._boardTasks, updatedTask);
+    this._sourcedBoardTasks = updateItem(this._sourcedBoardTasks, updatedTask);
+    this._taskPresenter[updatedTask.id].init(updatedTask);
   }
 
   _sortTasks(sortType) {
@@ -76,36 +91,9 @@ export default class Board {
   }
 
   _renderTask(task) {
-    const taskComponent = new TaskView(task);
-    const taskEditComponent = new TaskEditView(task);
-
-    const replaceCardToForm = () => {
-      replace(taskEditComponent, taskComponent);
-    };
-
-    const replaceFormToCard = () => {
-      replace(taskComponent, taskEditComponent);
-    };
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        evt.preventDefault();
-        replaceFormToCard();
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    taskComponent.setEditClickHandler(() => {
-      replaceCardToForm();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-
-    taskEditComponent.setFormSubmitHandler(() => {
-      replaceFormToCard();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-
-    render(this._taskListComponent, taskComponent, RenderPosition.BEFOREEND);
+    const taskPresenter = new TaskPresenter(this._taskListComponent, this._handleTaskChange, this._handleModeChange);
+    taskPresenter.init(task);
+    this._taskPresenter[task.id] = taskPresenter;
   }
 
   _renderTasks(from, to) {
@@ -134,7 +122,10 @@ export default class Board {
   }
 
   _clearTaskList() {
-    this._taskListComponent.getElement().innerHTML = ``;
+    Object
+      .values(this._taskPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._taskPresenter = {};
     this._renderedTaskCount = TASK_COUNT_PER_STEP;
   }
 

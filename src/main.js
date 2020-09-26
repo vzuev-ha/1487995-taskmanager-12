@@ -19,3 +19,5 @@ render(siteHeaderElement, new SiteMenuView(), RenderPosition.BEFOREEND);
 render(siteMainElement, new FilterView(filters), RenderPosition.BEFOREEND);
 
 boardPresenter.init(tasks);
+
+// 8.2 temp
